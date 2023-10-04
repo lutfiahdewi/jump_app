@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+h1{
+    font-weight: 700;
+    font-size: xx-large;
+}
+h2{
+    font-weight: 600;
+    font-size: x-large;
+}
+h3{
+    font-size: large;
+}
+
