@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -31,11 +32,18 @@ Route::get('/dashboard', function () {
 
 Route::get('/coba', function () {
     return Inertia::render('coba',[
-
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'dataPegawai' => (new PegawaiController)->getAllPegawai(),
     ]);
 })->name('coba');
+
 Route::get('/coba2', function () {
     return Inertia::render('coba2',[]);
+});
+
+Route::get('/FormulirKegiatan', function () {
+    return Inertia::render('FormulirKegiatan',[]);
 });
 
 Route::middleware('auth')->group(function () {

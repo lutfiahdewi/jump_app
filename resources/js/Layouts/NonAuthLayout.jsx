@@ -3,7 +3,7 @@ import Dropdown from "@/Components/Dropdown";
 import SideBar from "@/Components/SideBar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 
-export default function AuthLayout({ children }) {
+export default function NonAuthLayout({ children }) {
     return (
         <div className="flex">
             <SideBar />
@@ -30,15 +30,11 @@ export default function AuthLayout({ children }) {
                         </Dropdown.Trigger>
 
                         <Dropdown.Content>
-                            <Dropdown.Link href={route("profile.edit")}>
-                                Profile
+                            <Dropdown.Link href={route("register")}>
+                                Register
                             </Dropdown.Link>
-                            <Dropdown.Link
-                                href={route("logout")}
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
+                            <Dropdown.Link href={route("login")}>
+                                Log In
                             </Dropdown.Link>
                         </Dropdown.Content>
                     </Dropdown>

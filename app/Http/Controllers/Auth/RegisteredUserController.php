@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pegawai;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -32,15 +33,29 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
+            'NIP' => 'required|max:30|unique:'.User::class,
             'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'tanggal_lahir' => 'required',
+            'jenis_kelamin' => 'required',// Rules\In(['asc','desc'])],
+            'no_hp' => 'nullable|max:15',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'nama' => $request->nama,
+            'NIP' => $request->NIP,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+
+        Pegawai::create([
+            'nama' => $request->nama,
+            'NIP' => $request->NIP,
+            'email' => $request->email,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'no_hp' => $request->no_hp,
         ]);
 
         event(new Registered($user));

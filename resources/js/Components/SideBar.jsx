@@ -1,71 +1,85 @@
-import { Link, Head } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import {
-    ArrowPathIcon,
     Bars3Icon,
     XMarkIcon,
     ArrowLeftOnRectangleIcon,
-    ComputerDesktopIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/solid";
+import { LuMonitorCheck } from "react-icons/lu";
+import { MdOutlinePostAdd } from "react-icons/md";
+import {
+    FaBuildingUser,
+    FaUsers,
+    FaListCheck,
+    FaUsersGear,
+} from "react-icons/fa6";
 import { useState } from "react";
 
-export default function SideBar() {
+export default function SideBar({ className = "" }) {
     const [open, setOpen] = useState(false);
-    const menus = [ArrowLeftOnRectangleIcon, ComputerDesktopIcon];
+    //const menus = [ArrowLeftOnRectangleIcon, ComputerDesktopIcon];
     const listMenu = [
-        { title: "Dashboard",link:"", gap: true },
-        { title: "Form Entri Kegiatan",link:"" },
-        { title: "Form Kinerja Harian",link:"" },
-        { title: "Entri Kegiatan Mitra",link:"", gap: true },
-        { title: "Detail Pegawai",link:"" },
-        { title: "Detail Mitra",link:"" },
+        { title: "Dashboard", link: "Dashboard", icon: LuMonitorCheck, gap: true },
+        { title: "Form Entri Kegiatan", link: "FormulirKegiatan", icon: MdOutlinePostAdd },
+        { title: "Form Kinerja Harian", link: "FormulirKinerja", icon: FaListCheck },
+        {
+            title: "Entri Kegiatan Mitra",
+            link: "EntriMitra",
+            icon: FaUsersGear,
+            gap: true,
+        },
+        { title: "Detail Pegawai", link: "DetailPegawai", icon: FaBuildingUser },
+        { title: "Detail Mitra", link: "DetailMitra", icon: FaUsers },
     ];
     return (
         <>
-            <Head title="COba" />
-            <div className="flex">
-                <div
-                    className={
-                        (open ? "w-64" : "w-12") +
-                        " h-screen bg-dark-blue-base relative duration-300 text-slate-200"
-                    }
-                >
-                    <Bars3Icon
-                        className={
-                            (!open ? "visible duration-200" : "hidden") +
-                            " h-8 w-8 absolute top-3 right-3 cursor-pointer"
-                        }
-                        onClick={() => setOpen(!open)}
-                    />
-                    <XMarkIcon
-                        className={
-                            (!open ? "hidden" : "visible duration-200") +
-                            " h-8 w-8 absolute top-3 right-3 cursor-pointer"
-                        }
-                        onClick={() => setOpen(!open)}
-                    />
-                    <ul className="pt-20">
-                        {listMenu.map((menu, index) => (
+            <div
+                className={
+                    (open ? "w-auto p-3" : "w-16") +
+                    " h-screen sticky top-0 bg-dark-blue-base duration-300 text-slate-200"
+                }
+            >
+                <Bars3Icon
+                    className={`h-8 w-8 m-3 cursor-pointer self-center`}
+                    onClick={() => setOpen(!open)}
+                />
+                {/* <XMarkIcon
+                    className={" h-8 w-8 absolute top-3 right-3 cursor-pointer " + (!open && "hidden ")}
+                    onClick={() => setOpen(!open)}
+                /> */}
+                <ul className="p-3 pt-6">
+                    {listMenu.map((menu, index) => (
+                        <Link href={"/" + (menu.link)}>
                             <li
                                 key={index}
                                 className={
-                                   "flex rounded-md m-2 p-2 cursor-pointer hover:bg-dark-blue-hover pl-3 origin-left duration-200" 
-                                   +  (menu.gap && " mb-6")
-                                   + (!open && " hidden")
+                                    "flex rounded-md p-2 cursor-pointer hover:bg-dark-blue-hover gap-x-4 " +
+                                    (menu.gap && " mb-9 ") +
+                                    (index === 0 && "bg-dark-blue-hover")
                                 }
                             >
-                                {menu.title}
+                                <menu.icon className="h-8 w-8 self-center" />
+                                <span
+                                    className={
+                                        (!open && "hidden ") +
+                                        "origin-left duration-200"
+                                    }
+                                >
+                                    {menu.title}
+                                </span>
                             </li>
-                        ))}
-                    </ul>
-                    <div className="flex absolute bottom-6 left-2 ">
-                        <ArrowLeftOnRectangleIcon className="h-6 w-8" /> 
-                        <span className={"ml-2" + (open ? " visible duration-300" : " hidden")}>Logout</span>
-                        
-                    </div>
-                </div>
-                <div className="p-7 text-2xl font-semibold flex-1 h-screen">
-                    <h1>Home Page</h1>
-                </div>
+                        </Link>
+                    ))}
+                </ul>
+
+                {/* <div
+                    className={
+                        "flex rounded-md m-2 p-2 cursor-pointer hover:bg-dark-blue-hover duration-500 box-contain" +
+                        (!open && " hidden")
+                    }
+                >
+                    <ArrowLeftOnRectangleIcon className="h-6 w-8" />
+                    <span className={"ml-2"}>Logout</span>
+                </div> */}
             </div>
         </>
     );

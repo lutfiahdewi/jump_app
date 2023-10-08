@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,10 +19,19 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'nama',
+		'NIP',
         'email',
         'password',
     ];
+
+    /**
+     * Get the Pegawai(profile) associated with the user.
+     */
+    public function pegawai(): HasOne
+    {
+        return $this->hasOne(Pegawai::class, 'NIP', 'NIP');
+    }
 
     /**
      * The attributes that should be hidden for serialization.
