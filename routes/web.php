@@ -30,7 +30,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/coba', function () {
+Route::get('/home', function () {
     return Inertia::render('coba',[
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -44,6 +44,10 @@ Route::get('/coba2', function () {
 
 Route::get('/FormulirKegiatan', function () {
     return Inertia::render('FormulirKegiatan',[]);
+});
+
+Route::get('/DetailPegawai', function () {
+    return Inertia::render('DetailPegawai',[]);
 });
 
 Route::middleware('auth')->group(function () {

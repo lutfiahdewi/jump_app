@@ -3,10 +3,10 @@ import Dropdown from "@/Components/Dropdown";
 import SideBar from "@/Components/SideBar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 
-export default function AuthLayout({ children }) {
+export default function AuthLayout({ children, className="" }) {
     return (
         <div className="flex">
-            <SideBar />
+            <SideBar className=""/>
             <div className="flex flex-col w-screen">
                 <div className="h-auto flex justify-between bg-slate-100 shadow py-1 px-3 sticky top-0 z-50">
                     <Link href="/home">
@@ -43,7 +43,7 @@ export default function AuthLayout({ children }) {
                         </Dropdown.Content>
                     </Dropdown>
                 </div>
-                <main className="p-3 lg:mx-3">{children}</main>
+                <main className={"p-3 lg:mx-8" + className}>{children}</main>
                 <footer className="flex justify-center mt-5 p-3 bg-slate-50 text-sm">
                     Copyright &copy; BPS Kabupaten Jombang
                 </footer>

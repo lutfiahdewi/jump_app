@@ -2,27 +2,44 @@ import NonAuthLayout from "@/Layouts/NonAuthLayout";
 import AuthLayout from "@/Layouts/AuthLayout";
 import { Head } from "@inertiajs/react";
 import DatePickers from "@/Components/DatePicker";
+import StatCard from "@/Components/StatCard";
 import Chart from "chart.js/auto";
-import { Pie } from "react-chartjs-2";
+import {Pie, Line } from "react-chartjs-2";
 import Table from "rc-table";
 
 export default function coba({ auth, dataPegawai}) {
+    //data capain FRA
+    const dataFRA = [
+        {title: "Realisasi Anggaran", progress:70},
+        {title: "Publikasi Akurat", progress:96},
+        {title: "Rekomendasi Stat", progress:40},
+        {title: "Metadata Stat", progress:0},
+        {title: "SAKIP", progress:100},
+        {title: "Kepuasan Pengguna", progress:96}
+    ];
+    //Layout header, footer dan sidebar
+    const Layout = auth.user ? AuthLayout : NonAuthLayout;
+    
+    //data pie chart
     const data = {
-        labels: ["Red", "Blue", "Yellow"],
+        labels: ["Terlambat", "Selesai", "Berjalan"],
         datasets: [
             {
-                label: "My First Dataset",
-                data: [300, 50, 100],
+                label: "Status Kegiatan",
+                data: [25, 40, 35],
                 backgroundColor: [
-                    "rgb(255, 99, 132)",
-                    "rgb(54, 162, 235)",
-                    "rgb(255, 205, 86)",
+                    "#ef4444",
+                    "#22c55e",
+                    "#f97316",
                 ],
                 hoverOffset: 2,
             },
         ],
     };
 
+    //data tabel
+    const dataPegawai2 = dataPegawai.slice(0,25);
+    //pengaturan tabel
     const kolomDataPegawai = [
         {
             title: "NIP",
@@ -61,9 +78,60 @@ export default function coba({ auth, dataPegawai}) {
         },
     ];
 
-    const dataPegawai2 = dataPegawai.slice(0,25);
+    //data grafik line
+    const MONTHS = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
+      
+      function months(config) {
+        var cfg = config || {};
+        var count = cfg.count || 12;
+        var section = cfg.section;
+        var values = [];
+        var i, value;
+      
+        for (i = 0; i < count; ++i) {
+          value = MONTHS[Math.ceil(i) % 12];
+          values.push(value.substring(0, section));
+        }
+      
+        return values;
+      }
+    const dataLine = {
+        labels: months({count: 7}),
+        datasets: [{
+            label: 'Jumlah Kegiatan',
+            data: [2, 4, 3, 7, 5, 1, 4],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }]
+    };
 
-    const Layout = auth.user ? AuthLayout : NonAuthLayout;
+    //pengaturan grafik line
+    const optionsLine = {
+        responsive: true,
+        plugins: {
+        legend: {
+          position: 'bottom',
+        },
+          title: {
+            display: true,
+            text: 'Grafik kegiatan BPS Kabupaten Jombang',
+          },
+        },
+      };
 
     return (
         <Layout>
@@ -74,37 +142,23 @@ export default function coba({ auth, dataPegawai}) {
             </section>
             <section className="my-10" id="capaian">
                 <h3 className="font-bold mb-3 ">Capaian FRA</h3>
-                <div className="flex gap-x-12">
-                    <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
-                        <h5>Realisasi Anggaran (%)</h5>
-                        <h1>70%</h1>
-                        <div className="bg-slate-200 relative h-4 w-full rounded-2xl">
-                            <div
-                                className="bg-orange-600 absolute top-0 left-0 flex h-full items-center justify-center rounded-2xl text-xs font-semibold text-white"
-                                style={{ width: "33.3%" }}
-                            >
-                                63,3%
-                            </div>
-                        </div>
-                    </div>
+                <div className="flex gap-x-6">
+                    {dataFRA.map((statFRA, index) => (
+                        <StatCard title={statFRA.title} progress={statFRA.progress.toString()}/>
+                    ))}
                 </div>
             </section>
             <section className="my-10" id="kegiatanBPS">
                 <h3 className="font-bold mb-3 ">Kegiatan BPS Jombang</h3>
                 <div className="grid grid-cols-5 gap-3">
-                    <div className="grid max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
-                        <h5>Total Kegiatan Tahun Ini</h5>
-                        <h1 className="justify-self-center ">1</h1>
+                    
+                    <StatCard title="Total Kegiatan Tahun Ini" className="grid" singleStat={1} />
+                    <StatCard title="Total Kegiatan Bulan Ini" className="grid" singleStat={0} />
+                    
+                    <div className="col-span-3 row-span-3">
+                        <Line options={optionsLine} data={dataLine} />
                     </div>
-                    <div className="grid max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
-                        <h5>Total Kegiatan Tahun Ini</h5>
-                        <h1 className="justify-self-center ">1</h1>
-                    </div>
-                    <div className="bg-slate-300 col-span-3 row-span-3">
-                        Grafik
-                    </div>
-                    <div className="grid justify-items-center bg-blue-100 col-span-2 row-span-2 ">
-                        <h4>Pie chart</h4>
+                    <div className="grid justify-items-center col-span-2 row-span-2 ">
                         <div className="block max-w-sm lg:w-64 p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
                             <Pie data={data} />
                         </div>
@@ -121,14 +175,12 @@ export default function coba({ auth, dataPegawai}) {
                 <div className="grid grid-cols-2">
                     <div className="mb-2">
                         <h3>Penyelesaian Kegiatan</h3>
+                        <div className="h-48 bg-slate-100" ></div>
                     </div>
                     <div className="mb-2">
                         <h3>Monitoring Laporan Harian</h3>
                     </div>
                 </div>
-            </section>
-            <section className="my-24">
-
             </section>
         </Layout>
     );

@@ -1,12 +1,12 @@
-import NonAuthLayout from "@/Layouts/NonAuthLayout";
+import AuthLayout from "@/Layouts/AuthLayout";
 import {Head} from "@inertiajs/react";
 
 export default function FormulirKegiatan(){
     return(
     
-    <NonAuthLayout>
+    <AuthLayout>
         <Head title="Formulir Kegiatan"/>
 
-    </NonAuthLayout>
+    </AuthLayout>
     );
 }

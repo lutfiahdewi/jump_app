@@ -15,7 +15,7 @@ import {
 import { useState } from "react";
 
 export default function SideBar({ className = "" }) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(localStorage.getItem("open") || false);
     //const menus = [ArrowLeftOnRectangleIcon, ComputerDesktopIcon];
     const listMenu = [
         { title: "Dashboard", link: "Dashboard", icon: LuMonitorCheck, gap: true },
@@ -35,12 +35,15 @@ export default function SideBar({ className = "" }) {
             <div
                 className={
                     (open ? "w-auto p-3" : "w-16") +
-                    " h-screen sticky top-0 bg-dark-blue-base duration-300 text-slate-200"
+                    " h-screen sticky top-0 bg-dark-blue-base duration-300 text-slate-200 z-50"
+                    + className
                 }
             >
                 <Bars3Icon
                     className={`h-8 w-8 m-3 cursor-pointer self-center`}
-                    onClick={() => setOpen(!open)}
+                    onClick={() => {localStorage.setItem("open", !open );
+                        setOpen(!open);
+                    }}
                 />
                 {/* <XMarkIcon
                     className={" h-8 w-8 absolute top-3 right-3 cursor-pointer " + (!open && "hidden ")}
@@ -48,9 +51,9 @@ export default function SideBar({ className = "" }) {
                 /> */}
                 <ul className="p-3 pt-6">
                     {listMenu.map((menu, index) => (
-                        <Link href={"/" + (menu.link)}>
+                        <Link href={"/" + (menu.link)} key={index}>
                             <li
-                                key={index}
+                                
                                 className={
                                     "flex rounded-md p-2 cursor-pointer hover:bg-dark-blue-hover gap-x-4 " +
                                     (menu.gap && " mb-9 ") +
